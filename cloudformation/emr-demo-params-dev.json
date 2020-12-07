@@ -1,0 +1,34 @@
+[
+  {
+    "ParameterKey": "ProjectName",
+    "ParameterValue": "EMR Demo Project"
+  },
+  {
+    "ParameterKey": "TerminationProtected",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "MasterInstanceCount",
+    "ParameterValue": "1"
+  },
+  {
+    "ParameterKey": "MasterInstanceType",
+    "ParameterValue": "m5.xlarge"
+  },
+  {
+    "ParameterKey": "CoreInstanceCount",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "CoreInstanceType",
+    "ParameterValue": "r5.2xlarge"
+  },
+  {
+    "ParameterKey": "ReleaseLabel",
+    "ParameterValue": "emr-6.2.0"
+  },
+  {
+    "ParameterKey": "EbsRootVolumeSize",
+    "ParameterValue": "32"
+  }
+]
