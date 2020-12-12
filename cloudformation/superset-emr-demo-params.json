@@ -5,7 +5,7 @@
   },
   {
     "ParameterKey": "TerminationProtected",
-    "ParameterValue": "true"
+    "ParameterValue": "false"
   },
   {
     "ParameterKey": "MasterInstanceCount",

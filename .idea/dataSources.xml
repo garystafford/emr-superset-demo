@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="jdbc:presto://development.garystaf-ahana-demo.cp.ahana.cloud:443/" uuid="96119a77-f6c4-49ae-bcdc-761cb761a0c7">
+      <driver-ref>java.sql.Driver</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.facebook.presto.jdbc.PrestoDriver</jdbc-driver>
+      <jdbc-url>jdbc:presto://development.garystaf-ahana-demo.cp.ahana.cloud:443/</jdbc-url>
+    </data-source>
+  </component>
+</project>

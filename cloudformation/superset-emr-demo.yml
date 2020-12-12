@@ -35,10 +35,16 @@ Parameters:
   BootstrapBucket:
     Description: Name of S3 bucket where EMR bootstrap script is located
     Type: String
-  LogsBucket:
-    Description: Name of S3 bucket where EMR cluster logs is located
-    Type: String
 Resources:
+  LogsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join ['-', ['superset-emr-demo-logs', !Ref 'AWS::AccountId', !Ref 'AWS::Region']]
+      VersioningConfiguration:
+        Status: Suspended
+      Tags:
+        - Key: Name
+          Value: !Ref ProjectName
   Cluster:
     Type: AWS::EMR::Cluster
     Properties:
@@ -83,9 +89,10 @@ Resources:
       JobFlowRole: 'EMR_EC2_DefaultRole'
       ServiceRole: 'EMR_DefaultRole'
       ReleaseLabel: !Ref ReleaseLabel
-      StepConcurrencyLevel: 5
       VisibleToAllUsers: true
       LogUri: !Sub s3://${LogsBucket}/
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName} Cluster
+    DependsOn:
+      - LogsBucket
