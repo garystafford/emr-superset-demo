@@ -17,11 +17,11 @@
   },
   {
     "ParameterKey": "CoreInstanceCount",
-    "ParameterValue": "2"
+    "ParameterValue": "1"
   },
   {
     "ParameterKey": "CoreInstanceType",
-    "ParameterValue": "r5.2xlarge"
+    "ParameterValue": "m5.xlarge"
   },
   {
     "ParameterKey": "ReleaseLabel",

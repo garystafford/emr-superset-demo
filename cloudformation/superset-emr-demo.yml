@@ -49,13 +49,13 @@ Resources:
     Type: AWS::EMR::Cluster
     Properties:
       Applications:
-        - Name: 'Ganglia'
-        - Name: 'Hadoop'
-        - Name: 'Hive'
+#        - Name: 'Ganglia'
+#        - Name: 'Hadoop'
+#        - Name: 'Hive'
         - Name: 'Spark'
-        - Name: 'Zeppelin'
-        - Name: 'JupyterEnterpriseGateway' # only for new v5.31.0 and v6.2.0
-        - Name: 'Presto'
+#        - Name: 'Zeppelin'
+#        - Name: 'JupyterEnterpriseGateway' # only for new v5.31.0 and v6.2.0
+#        - Name: 'Presto'
       BootstrapActions:
         - Name: bootstrap-script
           ScriptBootstrapAction:
