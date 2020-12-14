@@ -36,9 +36,9 @@ def main():
     upload_file(f'{dir_path}/bootstrap_emr/bootstrap_actions.sh', bootstrap_bucket, 'bootstrap_actions.sh')
 
     # set variables
-    stack_name = 'emr-superset-demo'
+    stack_name = f'emr-superset-demo-{args.environment}'
     cfn_template_path = f'{dir_path}/cloudformation/superset-emr-demo.yml'
-    cfn_params_path = f'{dir_path}/cloudformation/superset-emr-demo-params.json'
+    cfn_params_path = f'{dir_path}/cloudformation/superset-emr-demo-params-{args.environment}.json'
     ec2_key_name = args.ec2_key_name
 
     # append new parameters
@@ -132,6 +132,7 @@ def parse_args():
     """Parse argument values from command-line"""
 
     parser = argparse.ArgumentParser(description='Arguments required for script.')
+    parser.add_argument('--environment', required=True, choices=['dev', 'test'], help='Environment')
     parser.add_argument('--ec2-key-name', required=True, help='Ec2KeyName: Name of EC2 Keypair')
     parser.add_argument('--ec2-subnet-id', required=True, help='Ec2SubnetId: Name of EC2 Keypair')
 

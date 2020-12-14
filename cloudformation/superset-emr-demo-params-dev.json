@@ -1,7 +1,7 @@
 [
   {
     "ParameterKey": "ProjectName",
-    "ParameterValue": "EMR Demo Project"
+    "ParameterValue": "EMR Superset Demo"
   },
   {
     "ParameterKey": "TerminationProtected",

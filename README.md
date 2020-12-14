@@ -6,11 +6,14 @@ Project files for the post, [Installing Apache Superset on Amazon EMR](https://g
 
 ### Create CloudFormation Stack
 
+Environment can be `dev` or `test` (different params files).
+
 ```shell script
 export EC2_KEY_PAIR="<your_key_pair_name>"
 export SUBNET_ID="<your_subnet_name>"
 
 python3 ./create_cfn_stack.py \
+    --environment dev \
     --ec2-key-name ${EC2_KEY_PAIR} \
     --ec2-subnet-id ${SUBNET_ID}
 ```

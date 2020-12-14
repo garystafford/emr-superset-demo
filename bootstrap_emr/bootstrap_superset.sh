@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# Purpose: EMR bootstrap script that installs Superset
+# Purpose: EMR shell script that installs Apache Superset
 # Author:  Gary A. Stafford (December 2020)
 # Usage: sh ./bootstrap_superset.sh 8280
 # Reference: https://superset.apache.org/docs/installation/installing-superset-from-scratch
 
+# port for superset (default: 8280)
+export SUPERSET_PORT="${1:-8280}"
 
-# choose an open port for superset
-export SUPERSET_PORT=$1
+# install required packages
+sudo yum -y install gcc gcc-c++ libffi-devel python-devel python-pip python-wheel \
+  openssl-devel cyrus-sasl-devel openldap-devel python3-devel.x86_64
 
-# update and install required packages
+# optionally, update Master Node packages
 sudo yum -y update
-sleep 2
-sudo yum -y install jq gcc gcc-c++ libffi-devel python-devel python-pip python-wheel \
-  openssl-devel cyrus-sasl-devel openldap-devel boto3 ec2-metadata awswrangler python3-devel.x86_64
 
 # install required Python package
 python3 -m pip install --upgrade setuptools virtualenv
@@ -89,7 +89,3 @@ printf %s """
   Admin Password: ${ADMIN_PASSWORD}
 **********************************************************************
 """
-
-# set aws region for boto3
-aws configure set region "$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document |
-  jq -r .region)"
