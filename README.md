@@ -32,8 +32,7 @@ ssh -i ${EC2_KEY_PATH} \
     hadoop@${MASTER_NODE_DNS} "sh ./bootstrap_superset.sh 8280"
 
 # open an SSH tunnel to master node using dynamic port forwarding
-ssh -i ${EC2_KEY_PATH} \
-  -ND 8157 hadoop@${MASTER_NODE_DNS}
+ssh -i ${EC2_KEY_PATH} -ND 8157 hadoop@${MASTER_NODE_DNS}
 ```
 
 ### Create Athena Database
