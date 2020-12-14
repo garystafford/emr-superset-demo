@@ -12,7 +12,7 @@ Project files for the post, [Installing Apache Superset on Amazon EMR](https://g
 - `awsathena+rest://athena.us-east-1.amazonaws.com:443/AwsDataCatalog?s3_staging_dir=s3://aws-athena-query-results-123456789012-us-east-1`
 
 ### Method #1
-Run as a bootstraop script.
+Run as a bootstrap script.
 
 ```shell script
 export EC2_KEY_PAIR="<your_key_pair_name>"
@@ -27,14 +27,17 @@ python3 ./create_cfn_stack.py \
 Copy script to Master node and then execute.
 
 ```shell script
-export MASTER_NODE_DNS=ec2-18-234-23-209.compute-1.amazonaws.com
+export MASTER_NODE_DNS=ec2-12-345-67-890.compute-1.amazonaws.com
 export EC2_KEY_PATH=~/.ssh/emr-demo-123456789012-us-east-1.pem
 
-scp -i ${EC2_KEY} \
-    bootstrap_actions.sh hadoop@${MASTER_NODE_DNS}:~
+scp -i ${EC2_KEY_PATH} \
+    bootstrap_emr/bootstrap_superset.sh hadoop@${MASTER_NODE_DNS}:~
 
-ssh -i ~/.ssh/${EC2_KEY_PATH} \
-    hadoop@${MASTER_NODE_DNS} "sh ./bootstrap_actions_ssh.sh"
+ssh -i ${EC2_KEY_PATH} \
+    hadoop@${MASTER_NODE_DNS} "sh ./bootstrap_superset.sh 8280"
+
+ssh -i ${EC2_KEY_PATH} \
+  -ND 8157 hadoop@${MASTER_NODE_DNS}
 ```
 
 Sample Athena query from Superset

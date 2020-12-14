@@ -2,10 +2,12 @@
 
 # Purpose: EMR bootstrap script that installs Superset
 # Author:  Gary A. Stafford (December 2020)
+# Usage: sh ./bootstrap_superset.sh 8280
 # Reference: https://superset.apache.org/docs/installation/installing-superset-from-scratch
 
+
 # choose an open port for superset
-export SUPERSET_PORT=8280
+export SUPERSET_PORT=$1
 
 # update and install required packages
 sudo yum -y update
@@ -66,7 +68,7 @@ INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/dynamic/instance-iden
 echo "INSTANCE_ID: ${INSTANCE_ID}"
 
 # use instance id to get public dns of master node
-PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} | \
+PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} |
   jq -r '.Reservations[0].Instances[0].PublicDnsName')"
 echo "PUBLIC_MASTER_DNS: ${PUBLIC_MASTER_DNS}"
 
@@ -77,16 +79,17 @@ nohup superset run \
   --with-threads --reload --debugger \
   >superset_output.log 2>&1 </dev/null &
 
-#lsof -i :8280
+# lsof -i :${SUPERSET_PORT}
 
 # output key info
 printf %s """
-**************************************************************************
+**********************************************************************
   Superset URL: http://${PUBLIC_MASTER_DNS}:${SUPERSET_PORT}
   Admin Username: ${ADMIN_USERNAME}
   Admin Password: ${ADMIN_PASSWORD}
-**************************************************************************
+**********************************************************************
 """
 
 # set aws region for boto3
-aws configure set region "$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)"
+aws configure set region "$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document |
+  jq -r .region)"
