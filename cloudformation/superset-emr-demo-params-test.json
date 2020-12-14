@@ -4,8 +4,16 @@
     "ParameterValue": "EMR Superset Demo"
   },
   {
+    "ParameterKey": "EnvironmentName",
+    "ParameterValue": "Test"
+  },
+  {
+    "ParameterKey": "ClusterOwner",
+    "ParameterValue": "Data Analytics Test Team"
+  },
+  {
     "ParameterKey": "TerminationProtected",
-    "ParameterValue": "true"
+    "ParameterValue": "false"
   },
   {
     "ParameterKey": "MasterInstanceCount",

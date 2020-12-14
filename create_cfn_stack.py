@@ -132,9 +132,9 @@ def parse_args():
     """Parse argument values from command-line"""
 
     parser = argparse.ArgumentParser(description='Arguments required for script.')
-    parser.add_argument('--environment', required=True, choices=['dev', 'test'], help='Environment')
-    parser.add_argument('--ec2-key-name', required=True, help='Ec2KeyName: Name of EC2 Keypair')
-    parser.add_argument('--ec2-subnet-id', required=True, help='Ec2SubnetId: Name of EC2 Keypair')
+    parser.add_argument('-e', '--environment', required=True, choices=['dev', 'test', 'prod'], help='Environment')
+    parser.add_argument('-k', '--ec2-key-name', required=True, help='Ec2KeyName: Name of EC2 Keypair')
+    parser.add_argument('-s', '--ec2-subnet-id', required=True, help='Ec2SubnetId: Name of EC2 Keypair')
 
     args = parser.parse_args()
     return args

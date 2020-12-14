@@ -3,7 +3,13 @@ Description:  >
   Stack for Superset on EMR. Deploys an EMR cluster.
 Parameters:
   ProjectName:
-    Description: Environment name that is prefixed to resource names
+    Description: Project name that is prefixed to resource names
+    Type: String
+  EnvironmentName:
+    Description: Environment name (e.g., Development, Test, Production)
+    Type: String
+  ClusterOwner:
+    Description: Owner of Cluster (e.g., Data Analysts, Marketing, Finance)
     Type: String
   Ec2SubnetId:
     Description: The Subnet Id where the cluster will be deployed
@@ -44,18 +50,18 @@ Resources:
         Status: Suspended
       Tags:
         - Key: Name
-          Value: !Ref ProjectName
+          Value: !Sub ${ProjectName} Logs Bucket
   Cluster:
     Type: AWS::EMR::Cluster
     Properties:
       Applications:
-#        - Name: 'Ganglia'
-#        - Name: 'Hadoop'
-#        - Name: 'Hive'
+        - Name: 'Ganglia'
+        - Name: 'Hadoop'
+        - Name: 'Hive'
         - Name: 'Spark'
-#        - Name: 'Zeppelin'
-#        - Name: 'JupyterEnterpriseGateway' # only for new v5.31.0 and v6.2.0
-#        - Name: 'Presto'
+        - Name: 'Zeppelin'
+        - Name: 'JupyterEnterpriseGateway' # only for new v5.31.0 and v6.2.0
+        - Name: 'Presto'
       BootstrapActions:
         - Name: bootstrap-script
           ScriptBootstrapAction:
@@ -94,5 +100,9 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName} Cluster
+        - Key: Environment
+          Value: !Ref EnvironmentName
+        - Key: Owner
+          Value: !Ref ClusterOwner
     DependsOn:
       - LogsBucket

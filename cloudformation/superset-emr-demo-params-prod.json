@@ -5,15 +5,15 @@
   },
   {
     "ParameterKey": "EnvironmentName",
-    "ParameterValue": "Development"
+    "ParameterValue": "Production"
   },
   {
     "ParameterKey": "ClusterOwner",
-    "ParameterValue": "Data Analytics Team"
+    "ParameterValue": "Operations Team"
   },
   {
     "ParameterKey": "TerminationProtected",
-    "ParameterValue": "false"
+    "ParameterValue": "true"
   },
   {
     "ParameterKey": "MasterInstanceCount",
@@ -21,15 +21,15 @@
   },
   {
     "ParameterKey": "MasterInstanceType",
-    "ParameterValue": "m5.xlarge"
+    "ParameterValue": "r5.xlarge"
   },
   {
     "ParameterKey": "CoreInstanceCount",
-    "ParameterValue": "1"
+    "ParameterValue": "4"
   },
   {
     "ParameterKey": "CoreInstanceType",
-    "ParameterValue": "m5.xlarge"
+    "ParameterValue": "r5.2xlarge"
   },
   {
     "ParameterKey": "ReleaseLabel",
