@@ -4,15 +4,7 @@
 
 Project files for the post, [Installing Apache Superset on Amazon EMR](https://garystafford.medium.com/). Please see post for complete instructions on using the project's files.
 
-
-## Notes
-
-- Athena database connection
-- EMR_EC2_DefaultRole role need athena access (e.g., managed policy: AmazonAthenaFullAccess)
-- `awsathena+rest://athena.us-east-1.amazonaws.com:443/AwsDataCatalog?s3_staging_dir=s3://aws-athena-query-results-123456789012-us-east-1`
-
-### Method #1
-Run as a bootstrap script.
+### Create CloudFormation Stack
 
 ```shell script
 export EC2_KEY_PAIR="<your_key_pair_name>"
@@ -22,9 +14,9 @@ python3 ./create_cfn_stack.py \
     --ec2-key-name ${EC2_KEY_PAIR} \
     --ec2-subnet-id ${SUBNET_ID}
 ```
-### Method #2
+### Run Superset Bootstrap Script
 
-Copy script to Master node and then execute.
+Copy bootstrap script to Master node and then execute remotely using SSH.
 
 ```shell script
 export MASTER_NODE_DNS="ec2-<your_dns_address>.compute-1.amazonaws.com"
@@ -36,11 +28,22 @@ scp -i ${EC2_KEY_PATH} \
 ssh -i ${EC2_KEY_PATH} \
     hadoop@${MASTER_NODE_DNS} "sh ./bootstrap_superset.sh 8280"
 
+# open an SSH tunnel to master node using dynamic port forwarding
 ssh -i ${EC2_KEY_PATH} \
   -ND 8157 hadoop@${MASTER_NODE_DNS}
 ```
 
-Sample Athena query from Superset
+### Create Athena Database
+
+Create an Athena database connection. Note the `EMR_EC2_DefaultRole` role need access to Athena (e.g., managed policy: `AmazonAthenaFullAccess`).
+
+```text
+awsathena+rest://athena.us-east-1.amazonaws.com:443/AwsDataCatalog?s3_staging_dir=s3://aws-athena-query-results-123456789012-us-east-1
+```
+
+### Sample Athena Query
+
+Run the follow query in Superset.
 
 ```sql
 SELECT upper(symbol)        AS symbol,
@@ -53,7 +56,7 @@ ORDER BY avg_close DESC
 LIMIT 10;
 ```
 
-# References
+## References
 
 - https://superset.apache.org/docs/installation/installing-superset-from-scratch
 - https://gitmemory.com/issue/apache/incubator-superset/8169/528679887
