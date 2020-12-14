@@ -27,8 +27,8 @@ python3 ./create_cfn_stack.py \
 Copy script to Master node and then execute.
 
 ```shell script
-export MASTER_NODE_DNS=ec2-12-345-67-890.compute-1.amazonaws.com
-export EC2_KEY_PATH=~/.ssh/emr-demo-123456789012-us-east-1.pem
+export MASTER_NODE_DNS="ec2-<your_dns_address>.compute-1.amazonaws.com"
+export EC2_KEY_PATH="~/.ssh/<your_key_pair_name>.pem"
 
 scp -i ${EC2_KEY_PATH} \
     bootstrap_emr/bootstrap_superset.sh hadoop@${MASTER_NODE_DNS}:~
