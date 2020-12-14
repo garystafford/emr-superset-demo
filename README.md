@@ -27,11 +27,14 @@ python3 ./create_cfn_stack.py \
 Copy script to Master node and then execute.
 
 ```shell script
-scp -i ~/.ssh/emr-demo-123456789012-us-east-1.pem \
-    bootstrap_actions.sh hadoop@ec2-1-22-333-44.compute-1.amazonaws.com:~
+export MASTER_NODE_DNS=ec2-18-234-23-209.compute-1.amazonaws.com
+export EC2_KEY_PATH=~/.ssh/emr-demo-123456789012-us-east-1.pem
 
-ssh -i ~/.ssh/emr-demo-123456789012-us-east-1.pem \
-    hadoop@ec2-1-22-333-44.compute-1.amazonaws.com "sh ./bootstrap_actions.sh"
+scp -i ${EC2_KEY} \
+    bootstrap_actions.sh hadoop@${MASTER_NODE_DNS}:~
+
+ssh -i ~/.ssh/${EC2_KEY_PATH} \
+    hadoop@${MASTER_NODE_DNS} "sh ./bootstrap_actions_ssh.sh"
 ```
 
 Sample Athena query from Superset

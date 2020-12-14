@@ -19,21 +19,25 @@ sudo -u hadoop -i bash -c "python3 -m pip install --user --upgrade setuptools pi
 sudo -u hadoop -i bash -c "python3 -m venv venv"
 sudo -u hadoop -i bash -c ". venv/bin/activate"
 
+# install and upgrade superset
+sudo -u hadoop -i bash -c "export PATH=\"/home/hadoop/venv/bin:${PATH}\""
+sudo -u hadoop -i bash -c "echo ${PATH}"
+
+sudo -u hadoop -i bash -c "python3 -m pip install --target=/home/hadoop/venv/bin apache-superset"
+sudo -u hadoop -i bash -c "which superset"
+sudo -u hadoop -i bash -c "superset db upgrade"
+
 PYTHON_DIR="$(ls /home/hadoop/venv/lib | head)" # should only be one dir in there
 echo "PYTHON_DIR: ${PYTHON_DIR}"
 
+# won't exist until superset is installed...
 SUPERSET_HOME="/home/hadoop/venv/lib/${PYTHON_DIR}/site-packages/superset"
 echo "SUPERSET_HOME: ${SUPERSET_HOME}"
-
 sudo -u hadoop -i bash -c "echo \"export SUPERSET_HOME=${SUPERSET_HOME}\" >> ~/.bashrc"
-
-# install and upgrade superset
-sudo -u hadoop -i bash -c "python3 -m pip install --target=/home/hadoop/venv/bin apache-superset"
-sudo -u hadoop -i bash -c "superset db upgrade"
 
 # install a few db drivers: Amazon Athena, RedShift, Spark SQL/Presto, PostgreSQL, MySQL
 # https://superset.apache.org/docs/databases/installing-database-drivers
-sudo -u hadoop -i bash -c "python3 -m pip install --target=/home/hadoop/venv/bin PyAthenaJDBC>1.0.9 PyAthena>1.2.0 sqlalchemy-redshift pyhive mysqlclient"
+sudo -u hadoop -i bash -c "python3 -m pip install --target=/home/hadoop/venv/lib/${PYTHON_DIR}/site-packages PyAthenaJDBC>1.0.9 PyAthena>1.2.0 sqlalchemy-redshift pyhive mysqlclient"
 
 sudo -u hadoop -i bash -c "echo \"export FLASK_APP=superset\" >> ~/.bashrc"
 
