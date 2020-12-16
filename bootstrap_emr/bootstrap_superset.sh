@@ -16,12 +16,12 @@ sudo yum -y install gcc gcc-c++ libffi-devel python-devel python-pip python-whee
 sudo yum -y update
 
 # install required Python package
-python3 -m pip install --upgrade setuptools virtualenv
+python3 -m pip install --user --upgrade setuptools virtualenv
 
 python3 -m venv venv
 . venv/bin/activate
 
-sudo python3 -m pip install --upgrade apache-superset PyAthenaJDBC PyAthena sqlalchemy-redshift pyhive mysqlclient
+python3 -m pip install --upgrade apache-superset PyAthenaJDBC PyAthena sqlalchemy-redshift pyhive mysqlclient
 command -v superset
 
 superset db upgrade
