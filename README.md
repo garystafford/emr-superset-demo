@@ -35,6 +35,10 @@ ssh -i ${EC2_KEY_PATH} \
 ssh -i ${EC2_KEY_PATH} -ND 8157 hadoop@${MASTER_NODE_DNS}
 ```
 
+```shell script
+# troubleshoot
+lsof -i :8280
+```
 ### Create Athena Database
 
 Create an Athena database connection. Note the `EMR_EC2_DefaultRole` role need access to Athena (e.g., managed policy: `AmazonAthenaFullAccess`).
