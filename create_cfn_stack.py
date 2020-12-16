@@ -5,7 +5,9 @@
 # Reference: https://gist.github.com/svrist/73e2d6175104f7ab4d201280acba049c
 # Usage Example: python3 ./create_cfn_stack.py \
 #                    --ec2-key-name emr-demo-123456789012-us-east-1 \
-#                    --ec2-subnet-id subnet-06aa61f790a932b32
+#                    --ec2-subnet-id subnet-06aa61f790a932b32 \
+#                    --environment dev
+
 
 import argparse
 import json
@@ -88,6 +90,7 @@ def upload_file(file_name, bootstrap_bucket, object_name):
 
 
 def create_stack(stack_name, cfn_template, cfn_params):
+    """Create EMR Cluster CloudFormation stack"""
     template_data = _parse_template(cfn_template)
 
     create_stack_params = {

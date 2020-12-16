@@ -22,7 +22,7 @@ python3 -m venv venv
 . venv/bin/activate
 
 python3 -m pip install --upgrade apache-superset \
-  PyAthenaJDBC PyAthena sqlalchemy-redshift pyhive mysqlclient
+  PyAthenaJDBC PyAthena sqlalchemy-redshift pyhive mysqlclient psycopg2-binary
 command -v superset
 
 superset db upgrade
@@ -65,11 +65,11 @@ superset fab create-user \
   --password UserGamma1234
 
 # get instance id
-INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .instanceId)"
+export INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .instanceId)"
 echo "INSTANCE_ID: ${INSTANCE_ID}"
 
 # use instance id to get public dns of master node
-PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} |
+export PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} |
   jq -r '.Reservations[0].Instances[0].PublicDnsName')"
 echo "PUBLIC_MASTER_DNS: ${PUBLIC_MASTER_DNS}"
 

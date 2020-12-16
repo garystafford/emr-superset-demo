@@ -106,3 +106,12 @@ Resources:
           Value: !Ref ClusterOwner
     DependsOn:
       - LogsBucket
+  ClusterMasterPublicDNS:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: '/emr_demo/master_public_dns'
+      Type: String
+      Value: !GetAtt Cluster.MasterPublicDNS
+      Description: Master Node Public DNS
+      Tags:
+        Environment: !Ref EnvironmentName
