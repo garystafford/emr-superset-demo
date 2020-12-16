@@ -109,7 +109,7 @@ Resources:
   ClusterMasterPublicDNS:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: '/emr_demo/master_public_dns'
+      Name: '/emr_superset_demo/master_public_dns'
       Type: String
       Value: !GetAtt Cluster.MasterPublicDNS
       Description: Master Node Public DNS

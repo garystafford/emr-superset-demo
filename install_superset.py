@@ -56,7 +56,7 @@ def get_parameters():
     """Load parameter values from AWS Systems Manager (SSM) Parameter Store"""
 
     params = {
-        'master_public_dns': ssm_client.get_parameter(Name='/emr_demo/master_public_dns')['Parameter']['Value']
+        'master_public_dns': ssm_client.get_parameter(Name='/emr_superset_demo/master_public_dns')['Parameter']['Value']
     }
 
     return params
