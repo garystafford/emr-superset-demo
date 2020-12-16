@@ -91,6 +91,7 @@ def upload_file(file_name, bootstrap_bucket, object_name):
 
 def create_stack(stack_name, cfn_template, cfn_params):
     """Create EMR Cluster CloudFormation stack"""
+
     template_data = _parse_template(cfn_template)
 
     create_stack_params = {
