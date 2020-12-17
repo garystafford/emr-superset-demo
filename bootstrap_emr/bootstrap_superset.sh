@@ -66,12 +66,14 @@ superset fab create-user \
   --password UserGamma1234
 
 # get instance id
-export INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .instanceId)"
+INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .instanceId)"
+export INSTANCE_ID
 echo "INSTANCE_ID: ${INSTANCE_ID}"
 
 # use instance id to get public dns of master node
-export PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} |
+PUBLIC_MASTER_DNS="$(aws ec2 describe-instances --instance-id ${INSTANCE_ID} |
   jq -r '.Reservations[0].Instances[0].PublicDnsName')"
+export PUBLIC_MASTER_DNS
 echo "PUBLIC_MASTER_DNS: ${PUBLIC_MASTER_DNS}"
 
 # start superset in background
