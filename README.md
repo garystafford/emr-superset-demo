@@ -1,8 +1,8 @@
-# Installing Apache Superset on Amazon EMR: Add data exploration and visualization to your analytics cluster
+# Installing Apache Superset on Amazon EMR
 
 ## Overview
 
-Project files for the post, [Installing Apache Superset on Amazon EMR: Add data exploration and visualization to your analytics cluster](https://garystafford.medium.com/installing-apache-superset-on-amazon-emr-5e2444f6d242). Please see post for complete instructions on using the project's files.
+Add data exploration and visualization to your analytics cluster. Project files for the post, [Installing Apache Superset on Amazon EMR: Add data exploration and visualization to your analytics cluster](https://garystafford.medium.com/installing-apache-superset-on-amazon-emr-5e2444f6d242). Please see post for complete instructions on using the project's files.
 
 ### Create CloudFormation Stack
 
@@ -19,8 +19,13 @@ python3 ./create_cfn_stack.py \
 python3 ./install_superset.py \
     --ec2-key-path </path/to/my-key-pair.pem> \
     --superset-port 8280
+```
 
-# open an SSH tunnel to master node using dynamic port forwarding
+### SSH Tunnel
+
+Open an SSH tunnel to master node using dynamic port forwarding
+
+```shell script
 ssh -i </path/to/my-key-pair.pem> -ND 8157 hadoop@<public_master_dns>
 ```
 
