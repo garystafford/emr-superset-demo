@@ -23,6 +23,7 @@ python3 -m venv venv
 
 python3 -m pip install --upgrade apache-superset \
   PyAthenaJDBC PyAthena sqlalchemy-redshift pyhive mysqlclient psycopg2-binary
+
 command -v superset
 
 superset db upgrade

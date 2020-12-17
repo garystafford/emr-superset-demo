@@ -43,11 +43,13 @@ def install_superset(file, master_node_dns, username, ec2_key_path, superset_por
         scp.put(file)
 
     stdin_, stdout_, stderr_ = ssh.exec_command(
-        command=f'sh ./bootstrap_superset.sh ${superset_port}', get_pty=True)
-    stdout_.channel.recv_exit_status()
-    lines = stdout_.readlines()
-    for line in lines:
-        logging.info(line)
+        command=f'sh ./bootstrap_superset.sh {superset_port} 2>&1')
+
+    stdout_lines = ''
+    while not stdout_.channel.exit_status_ready():
+        if stdout_.channel.recv_ready():
+            stdout_lines = stdout_.readlines()
+    logging.info(' '.join(map(str, stdout_lines)))
 
     ssh.close()
 
@@ -67,7 +69,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description='Arguments required for script.')
     parser.add_argument('-e', '--ec2-key-path', required=True, help='EC2 Key Path')
-    parser.add_argument('-s', '--superset-port', default=8280, help='Apache Superset Port')
+    parser.add_argument('-s', '--superset-port', default='8280', help='Apache Superset Port')
 
     args = parser.parse_args()
     return args
