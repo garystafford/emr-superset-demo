@@ -21,6 +21,7 @@ sts_client = boto3.client('sts')
 cfn_client = boto3.client('cloudformation')
 region = boto3.DEFAULT_SESSION.region_name
 s3_client = boto3.client('s3', region_name=region)
+s3 = boto3.resource('s3')
 
 logging.basicConfig(format='[%(asctime)s] %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -28,14 +29,15 @@ logging.basicConfig(format='[%(asctime)s] %(levelname)s - %(message)s', level=lo
 def main():
     args = parse_args()
 
-    # create bootstrap bucket
+    # create and tag bucket
     account_id = sts_client.get_caller_identity()['Account']
-    bootstrap_bucket = f'superset-emr-demo-bootstrap-{account_id}-{region}'
-    create_bucket(bootstrap_bucket)
+    bucket_name = f'superset-emr-demo-bootstrap-{account_id}-{region}'
+    create_bucket(bucket_name)
+    tag_bucket(bucket_name)
 
     # upload bootstrap script
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    upload_file(f'{dir_path}/bootstrap_emr/bootstrap_actions.sh', bootstrap_bucket, 'bootstrap_actions.sh')
+    upload_file(f'{dir_path}/bootstrap_emr/bootstrap_actions.sh', bucket_name, 'bootstrap_actions.sh')
 
     # set variables
     stack_name = f'emr-superset-demo-{args.environment}'
@@ -47,42 +49,62 @@ def main():
     cfn_params = _parse_parameters(cfn_params_path)
     cfn_params.append({'ParameterKey': 'Ec2KeyName', 'ParameterValue': ec2_key_name})
     cfn_params.append({'ParameterKey': 'Ec2SubnetId', 'ParameterValue': args.ec2_subnet_id})
-    cfn_params.append({'ParameterKey': 'BootstrapBucket', 'ParameterValue': bootstrap_bucket})
+    cfn_params.append({'ParameterKey': 'BootstrapBucket', 'ParameterValue': bucket_name})
     logging.info(json.dumps(cfn_params, indent=4))
 
     # create the cfn stack
     create_stack(stack_name, cfn_template_path, cfn_params)
 
 
-def create_bucket(bootstrap_bucket):
+def create_bucket(bucket_name):
     """Create an S3 bucket in a specified region
 
-    :param bootstrap_bucket: Bucket to create
+    :param bucket_name: Bucket to create
     :return: True if bucket created, else False
     """
 
     try:
-        s3_client.create_bucket(Bucket=bootstrap_bucket)
-        logging.info(f'New bucket name: {bootstrap_bucket}')
+        s3_client.create_bucket(Bucket=bucket_name)
+        logging.info(f'New bucket name: {bucket_name}')
     except ClientError as e:
         logging.error(e)
         return False
     return True
 
 
-def upload_file(file_name, bootstrap_bucket, object_name):
+def tag_bucket(bucket_name):
+    """Apply the common 'Name' tag and value to the bucket"""
+    try:
+        bucket_tagging = s3.BucketTagging(bucket_name)
+        response = bucket_tagging.put(
+            Tagging={
+                'TagSet': [
+                    {
+                        'Key': 'Name',
+                        'Value': 'EMR Demo Project'
+                    },
+                ]
+            }
+        )
+        logging.info(f'Response: {response}')
+    except Exception as e:
+        logging.error(e)
+        return False
+    return True
+
+
+def upload_file(file_name, bucket_name, object_name):
     """Upload a file to an S3 bucket
 
     :param file_name: File to upload
-    :param bootstrap_bucket: Bucket to upload to
+    :param bucket_name: Bucket to upload to
     :param object_name: S3 object name
     :return: True if file was uploaded, else False
     """
 
-    # Upload the file
     try:
-        response = s3_client.upload_file(file_name, bootstrap_bucket, object_name)
-        logging.info(f'File {file_name} uploaded to bucket {bootstrap_bucket} as object {object_name}')
+        s3_client.upload_file(file_name, bucket_name, object_name)
+        logging.info(f'File {file_name} uploaded to bucket {bucket_name} as object {object_name}')
     except ClientError as e:
         logging.error(e)
         return False
